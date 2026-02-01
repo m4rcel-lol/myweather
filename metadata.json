@@ -1,0 +1,7 @@
+{
+  "name": "MyWeather",
+  "description": "A beautiful, production-ready weather application with developer tools and embeddable widgets.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
