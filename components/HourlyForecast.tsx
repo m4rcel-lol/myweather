@@ -9,8 +9,32 @@ interface Props {
 }
 
 export const HourlyForecast: React.FC<Props> = ({ weather, unit }) => {
-  const currentHourIndex = new Date().getHours();
   const tempConvert = (c: number) => unit === 'F' ? Math.round((c * 9/5) + 32) : Math.round(c);
+  
+  // Find current index based on data time, not system time
+  const getCurrentIndex = () => {
+    if (!weather.current_weather?.time || !weather.hourly?.time) return 0;
+    const currentStr = weather.current_weather.time;
+    
+    // Try exact
+    const exactIndex = weather.hourly.time.indexOf(currentStr);
+    if (exactIndex !== -1) return exactIndex;
+
+    // Try fuzzy hour match
+    const currentDt = new Date(currentStr);
+    currentDt.setMinutes(0, 0, 0);
+    const targetTime = currentDt.getTime();
+
+    const fuzzyIndex = weather.hourly.time.findIndex(t => {
+        const d = new Date(t);
+        d.setMinutes(0, 0, 0);
+        return d.getTime() === targetTime;
+    });
+
+    return fuzzyIndex !== -1 ? fuzzyIndex : 0;
+  };
+
+  const currentHourIndex = getCurrentIndex();
   
   // Get next 24 hours
   const next24Hours = weather.hourly.time

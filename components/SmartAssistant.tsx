@@ -1,6 +1,6 @@
 import React from 'react';
 import { WeatherData, Unit } from '../types';
-import { Sparkles, Umbrella, Shirt, Sun, Wind, CloudRain } from 'lucide-react';
+import { Sparkles, Umbrella, Shirt, Sun, Wind, CloudRain, Rocket } from 'lucide-react';
 
 interface Props {
   weather: WeatherData;
@@ -20,7 +20,14 @@ export const SmartAssistant: React.FC<Props> = ({ weather, unit }) => {
   let bg = "bg-m3-primaryContainer";
   let text = "text-m3-onPrimaryContainer";
 
-  if (isRainy) {
+  if (temp < -50 || windSpeed > 150) {
+    // Extreme / Planetary conditions
+    suggestion = "Extreme conditions detected. A pressure suit and oxygen supply are mandatory.";
+    Icon = Rocket;
+    color = "text-red-600 dark:text-red-300";
+    bg = "bg-red-100 dark:bg-red-900/40";
+    text = "text-red-900 dark:text-red-100";
+  } else if (isRainy) {
     suggestion = "It's likely to rain. Don't forget your umbrella!";
     Icon = Umbrella;
     color = "text-blue-600 dark:text-blue-300";

@@ -9,32 +9,7 @@ interface Props {
 
 export const EnvironmentalCards: React.FC<Props> = ({ weather }) => {
   const { pressureUnit, windUnit } = useOutletContext<AppContextType>();
-  
-  // Timezone Fix: Find the index in hourly data that matches the current reported weather time
-  // This ensures we show the UV/Visibility for the location's actual time, not the user's system time.
-  const getCurrentIndex = () => {
-    if (!weather.current_weather?.time || !weather.hourly?.time) return 0;
-    
-    const currentStr = weather.current_weather.time;
-    // Try exact match first
-    const exactIndex = weather.hourly.time.indexOf(currentStr);
-    if (exactIndex !== -1) return exactIndex;
-
-    // Fallback: Match by hour (ignoring minutes/seconds drift)
-    const currentDt = new Date(currentStr);
-    currentDt.setMinutes(0, 0, 0);
-    const targetTime = currentDt.getTime();
-
-    const fuzzyIndex = weather.hourly.time.findIndex(t => {
-        const d = new Date(t);
-        d.setMinutes(0, 0, 0);
-        return d.getTime() === targetTime;
-    });
-
-    return fuzzyIndex !== -1 ? fuzzyIndex : 0;
-  };
-
-  const currentHourIndex = getCurrentIndex();
+  const currentHourIndex = new Date().getHours();
   
   // Data extraction
   const uvIndex = weather.hourly.uv_index?.[currentHourIndex] ?? 0;
@@ -144,10 +119,10 @@ export const EnvironmentalCards: React.FC<Props> = ({ weather }) => {
       <StatCard 
         icon={Wind}
         title="Air Quality"
-        value={weather.air_quality ? Math.round(aqi) : "N/A"}
-        sub={weather.air_quality ? aqiStatus.label : "Unavailable"}
-        progressColor={weather.air_quality ? aqiStatus.color : 'bg-gray-400'}
-        progressValue={weather.air_quality ? (aqi / 200) * 100 : 0}
+        value={Math.round(aqi)}
+        sub={aqiStatus.label}
+        progressColor={aqiStatus.color}
+        progressValue={(aqi / 200) * 100}
       />
 
       {/* UV Index */}

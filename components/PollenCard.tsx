@@ -1,6 +1,6 @@
 import React from 'react';
 import { WeatherData } from '../types';
-import { Flower, Sprout, Leaf } from 'lucide-react';
+import { Flower, Sprout, Leaf, AlertCircle } from 'lucide-react';
 
 interface Props {
   weather: WeatherData;
@@ -8,9 +8,26 @@ interface Props {
 
 export const PollenCard: React.FC<Props> = ({ weather }) => {
   const aq = weather.air_quality;
-  if (!aq) return null;
+  
+  // If no Air Quality data is returned from API, show unavailable state
+  if (!aq) {
+      return (
+        <div className="material-card p-6 bg-m3-surfaceContainer animate-slide-in-right opacity-60">
+            <div className="flex items-center gap-3 mb-6">
+                <div className="p-2 bg-gray-100 dark:bg-gray-800 text-gray-500 rounded-xl">
+                    <Flower size={20} />
+                </div>
+                <h3 className="text-xs font-bold text-m3-onSurfaceVariant uppercase tracking-wider">Pollen & Health</h3>
+            </div>
+            <div className="flex flex-col items-center justify-center py-4 text-m3-onSurfaceVariant text-sm gap-2">
+                <AlertCircle size={24} />
+                <span>Data unavailable for this location.</span>
+            </div>
+        </div>
+      );
+  }
 
-  // Pollen data (generic fallback if undefined)
+  // Pollen data
   const pollens = [
     { name: 'Grass', val: aq.grass_pollen ?? 0, icon: Sprout, color: 'text-green-500' },
     { name: 'Ragweed', val: aq.ragweed_pollen ?? 0, icon: Leaf, color: 'text-yellow-500' },

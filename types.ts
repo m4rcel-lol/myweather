@@ -28,6 +28,7 @@ export interface HourlyForecast {
   cloud_cover?: number[];
   precipitation_probability: number[];
   windspeed_10m?: number[];
+  apparent_temperature?: number[];
 }
 
 export interface DailyForecast {

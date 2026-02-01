@@ -10,8 +10,30 @@ interface Props {
 
 export const WeatherChart: React.FC<Props> = ({ weather, unit }) => {
   const [chartType, setChartType] = useState<'temp' | 'rain' | 'wind' | 'uv'>('temp');
-  const currentHourIndex = new Date().getHours();
   const tempConvert = (c: number) => unit === 'F' ? Math.round((c * 9/5) + 32) : c;
+
+  // Find correct start index
+  const getCurrentIndex = () => {
+    if (!weather.current_weather?.time || !weather.hourly?.time) return 0;
+    const currentStr = weather.current_weather.time;
+    
+    const exactIndex = weather.hourly.time.indexOf(currentStr);
+    if (exactIndex !== -1) return exactIndex;
+
+    const currentDt = new Date(currentStr);
+    currentDt.setMinutes(0, 0, 0);
+    const targetTime = currentDt.getTime();
+
+    const fuzzyIndex = weather.hourly.time.findIndex(t => {
+        const d = new Date(t);
+        d.setMinutes(0, 0, 0);
+        return d.getTime() === targetTime;
+    });
+
+    return fuzzyIndex !== -1 ? fuzzyIndex : 0;
+  };
+
+  const currentHourIndex = getCurrentIndex();
 
   const data = weather.hourly.time.slice(currentHourIndex, currentHourIndex + 24).map((time, i) => {
       const globalIndex = currentHourIndex + i;
