@@ -1,93 +1,137 @@
 import React from 'react';
-import { WeatherData, Unit } from '../types';
+import { useOutletContext } from 'react-router-dom';
+import { WeatherData, Unit, AppContextType } from '../types';
 import { WeatherIcon } from './WeatherIcon';
-import { Wind, Droplets, ArrowDown, ArrowUp } from 'lucide-react';
+import { Wind, Droplets, ArrowDown, ArrowUp, ThermometerSun, Star, Navigation } from 'lucide-react';
 
 interface Props {
   weather: WeatherData;
   locationName: string;
   unit: Unit;
+  isFavorite?: boolean;
+  onToggleFavorite?: () => void;
 }
 
-export const CurrentCard: React.FC<Props> = ({ weather, locationName, unit }) => {
+export const CurrentCard: React.FC<Props> = ({ weather, locationName, unit, isFavorite, onToggleFavorite }) => {
+  const { windUnit } = useOutletContext<AppContextType>();
   const current = weather.current_weather;
   const today = weather.daily;
 
   const temp = (c: number) => unit === 'F' ? Math.round((c * 9/5) + 32) : Math.round(c);
 
+  // Wind conversion
+  const formatWind = (speedKmh: number) => {
+    if (windUnit === 'mph') return `${Math.round(speedKmh * 0.621371)} mph`;
+    if (windUnit === 'm/s') return `${(speedKmh / 3.6).toFixed(1)} m/s`;
+    return `${Math.round(speedKmh)} km/h`;
+  };
+
   return (
-    <div className="w-full p-6 md:p-10 rounded-[2rem] glass-panel text-white relative overflow-hidden group animate-slide-up transition-all hover:shadow-2xl">
-      {/* Decorative Glow */}
-      <div className="absolute -top-24 -right-24 w-64 h-64 bg-yellow-400/20 rounded-full blur-[80px] group-hover:bg-yellow-400/30 transition-all duration-1000"></div>
-      
-      <div className="relative z-10 flex flex-col md:flex-row justify-between items-center md:items-start gap-8">
-        <div className="text-center md:text-left flex-1">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-2 drop-shadow-md">{locationName}</h2>
-          <p className="text-white/80 font-medium text-lg">
-            {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
-          </p>
-          
-          <div className="mt-8 flex flex-col items-center md:items-start">
-            <div className="flex items-start leading-none">
-                <span className="text-8xl md:text-9xl font-bold tracking-tighter drop-shadow-xl bg-gradient-to-b from-white to-white/70 bg-clip-text text-transparent">
-                {temp(current.temperature)}
-                </span>
-                <span className="text-5xl mt-2 font-medium text-white/80">°{unit}</span>
-            </div>
-            
-            <div className="flex items-center gap-3 mt-4 px-4 py-2 bg-white/10 rounded-full backdrop-blur-md border border-white/20 shadow-lg">
-                <WeatherIcon code={current.weathercode} isDay={current.is_day} size={24} className="text-yellow-300 drop-shadow-sm" />
-                <span className="text-lg font-medium">
-                   {current.weathercode === 0 ? 'Clear Sky' : 
-                    current.weathercode < 3 ? 'Partly Cloudy' :
-                    current.weathercode > 60 ? 'Rainy' : 
-                    current.weathercode === 45 ? 'Foggy' : 'Cloudy'}
-                </span>
-            </div>
-          </div>
+    <div className="material-card w-full p-8 relative overflow-hidden group bg-m3-surfaceContainer">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 relative z-10">
+        
+        {/* Main Info */}
+        <div className="flex flex-col gap-1 w-full md:w-auto">
+           <div className="flex items-center justify-between md:justify-start gap-4 mb-2">
+                <div className="flex items-center gap-3">
+                    <span className="px-3 py-1 rounded-full bg-m3-primaryContainer text-m3-onPrimaryContainer text-xs font-bold uppercase tracking-wider">
+                        Current
+                    </span>
+                    <span className="text-m3-onSurfaceVariant text-sm font-medium">
+                        {new Date().toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long' })}
+                    </span>
+                </div>
+                
+                {onToggleFavorite && (
+                    <button 
+                        onClick={onToggleFavorite}
+                        className={`p-2 rounded-full transition-colors ${isFavorite ? 'text-yellow-500 bg-yellow-500/10' : 'text-m3-onSurfaceVariant hover:bg-m3-surfaceContainerHigh'}`}
+                    >
+                        <Star size={24} fill={isFavorite ? "currentColor" : "none"} />
+                    </button>
+                )}
+           </div>
+           
+           <h2 className="text-3xl md:text-4xl font-semibold text-m3-onSurface tracking-tight">
+             {locationName}
+           </h2>
+
+           <div className="flex items-center gap-6 mt-6">
+                <div className="text-[110px] leading-none font-medium text-m3-onSurface tracking-tighter">
+                    {temp(current.temperature)}°
+                </div>
+                <div className="flex flex-col gap-2">
+                    <WeatherIcon code={current.weathercode} isDay={current.is_day} size={64} className="text-m3-primary" />
+                    <span className="text-xl font-medium text-m3-onSurfaceVariant capitalize">
+                         {current.weathercode === 0 ? 'Clear Sky' : 
+                        current.weathercode < 3 ? 'Partly Cloudy' :
+                        current.weathercode > 60 ? 'Rainy' : 
+                        current.weathercode === 45 ? 'Foggy' : 'Cloudy'}
+                    </span>
+                </div>
+           </div>
         </div>
 
-        <div className="flex flex-col gap-4 w-full md:w-auto min-w-[200px]">
-             {/* Stats Column */}
-             <div className="p-4 rounded-2xl bg-black/10 hover:bg-black/20 transition-colors backdrop-blur-sm flex items-center justify-between gap-6 border border-white/5">
-                <div className="flex items-center gap-4">
-                    <div className="p-2.5 rounded-xl bg-white/10 text-white"><Wind size={22} /></div>
-                    <div>
-                        <p className="text-[10px] text-white/60 uppercase font-bold tracking-wider">Wind</p>
-                        <p className="font-semibold text-lg">{current.windspeed} <span className="text-sm opacity-60">km/h</span></p>
-                    </div>
+        {/* Stats Grid */}
+        <div className="w-full md:w-auto grid grid-cols-2 gap-3 min-w-[300px]">
+            {/* Stat Item */}
+            <div className="bg-m3-surfaceContainerHigh p-4 rounded-[20px] flex flex-col justify-center">
+                <div className="flex items-center gap-2 text-m3-onSurfaceVariant mb-1">
+                    <Wind size={18} />
+                    <span className="text-xs font-bold uppercase">Wind</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <span className="text-xl font-semibold text-m3-onSurface">
+                        {formatWind(current.windspeed)}
+                    </span>
+                    {current.winddirection !== undefined && (
+                        <Navigation 
+                            size={16} 
+                            className="text-m3-primary transition-transform duration-700"
+                            style={{ transform: `rotate(${current.winddirection}deg)` }}
+                        />
+                    )}
                 </div>
             </div>
 
-             <div className="p-4 rounded-2xl bg-black/10 hover:bg-black/20 transition-colors backdrop-blur-sm flex items-center justify-between gap-6 border border-white/5">
-                <div className="flex items-center gap-4">
-                    <div className="p-2.5 rounded-xl bg-white/10 text-white"><Droplets size={22} /></div>
-                    <div>
-                        <p className="text-[10px] text-white/60 uppercase font-bold tracking-wider">Humidity</p>
-                        <p className="font-semibold text-lg">{weather.hourly.relativehumidity_2m[0]}<span className="text-sm opacity-60">%</span></p>
-                    </div>
+            <div className="bg-m3-surfaceContainerHigh p-4 rounded-[20px] flex flex-col justify-center">
+                <div className="flex items-center gap-2 text-m3-onSurfaceVariant mb-1">
+                    <Droplets size={18} />
+                    <span className="text-xs font-bold uppercase">Humidity</span>
                 </div>
+                <span className="text-xl font-semibold text-m3-onSurface">
+                    {weather.hourly.relativehumidity_2m[0]}<span className="text-sm font-normal opacity-60">%</span>
+                </span>
             </div>
 
-            <div className="p-4 rounded-2xl bg-black/10 hover:bg-black/20 transition-colors backdrop-blur-sm border border-white/5">
-                <div className="flex items-center justify-around gap-4">
-                    <div className="flex flex-col items-center">
-                         <div className="flex items-center text-white text-xl">
-                            <ArrowUp size={16} className="mr-1 text-red-300" />
-                            <span className="font-bold">{temp(today.temperature_2m_max[0])}°</span>
-                         </div>
-                         <p className="text-[10px] text-white/50 uppercase mt-1">High</p>
-                    </div>
-                    <div className="w-px h-10 bg-white/10"></div>
-                     <div className="flex flex-col items-center">
-                         <div className="flex items-center text-white text-xl">
-                            <ArrowDown size={16} className="mr-1 text-blue-300" />
-                            <span className="font-bold">{temp(today.temperature_2m_min[0])}°</span>
-                         </div>
-                         <p className="text-[10px] text-white/50 uppercase mt-1">Low</p>
-                    </div>
+            <div className="bg-m3-surfaceContainerHigh p-4 rounded-[20px] flex flex-col justify-center">
+                <div className="flex items-center gap-2 text-m3-onSurfaceVariant mb-1">
+                    <ArrowUp size={18} className="text-m3-error" />
+                    <span className="text-xs font-bold uppercase">High</span>
                 </div>
+                <span className="text-xl font-semibold text-m3-onSurface">
+                    {temp(today.temperature_2m_max[0])}°
+                </span>
             </div>
+
+             <div className="bg-m3-surfaceContainerHigh p-4 rounded-[20px] flex flex-col justify-center">
+                <div className="flex items-center gap-2 text-m3-onSurfaceVariant mb-1">
+                    <ArrowDown size={18} className="text-m3-primary" />
+                    <span className="text-xs font-bold uppercase">Low</span>
+                </div>
+                <span className="text-xl font-semibold text-m3-onSurface">
+                    {temp(today.temperature_2m_min[0])}°
+                </span>
+            </div>
+            
+            {current.apparent_temperature !== undefined && (
+                <div className="col-span-2 bg-m3-secondaryContainer p-4 rounded-[20px] flex items-center gap-3 text-m3-onSecondaryContainer">
+                     <ThermometerSun size={20} />
+                     <span className="font-medium">
+                        Feels like {temp(current.apparent_temperature)}°
+                     </span>
+                </div>
+            )}
         </div>
       </div>
     </div>

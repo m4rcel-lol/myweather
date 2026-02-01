@@ -1,102 +1,144 @@
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
-import { Code2, User, LayoutDashboard, Thermometer, HelpCircle, ArrowLeft } from 'lucide-react';
-import { Unit } from '../types';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { Code2, User, LayoutDashboard, Thermometer, HelpCircle, ArrowLeft, CloudSun, Star, MapPin, ScrollText, Settings, Map } from 'lucide-react';
+import { Unit, AppContextType } from '../types';
 
 interface Props {
   unit: Unit;
   toggleUnit: () => void;
+  favorites?: AppContextType['favorites'];
+  setActiveLocation?: AppContextType['setActiveLocation'];
 }
 
-export const Sidebar: React.FC<Props> = ({ unit, toggleUnit }) => {
+export const Sidebar: React.FC<Props> = ({ unit, toggleUnit, favorites = [], setActiveLocation }) => {
+  const navigate = useNavigate();
+  
   const navItems = [
-    { to: "/app/dashboard", icon: <LayoutDashboard size={20} />, label: "Weather" },
-    { to: "/app/developers", icon: <Code2 size={20} />, label: "API & Widgets" },
-    { to: "/app/about", icon: <User size={20} />, label: "About Dev" },
-    { to: "/app/faq", icon: <HelpCircle size={20} />, label: "FAQ" },
+    { to: "/app/dashboard", icon: <LayoutDashboard size={24} />, label: "Weather" },
+    { to: "/app/radar", icon: <Map size={24} />, label: "Radar" },
+    { to: "/app/settings", icon: <Settings size={24} />, label: "Settings" },
+    { to: "/app/changelog", icon: <ScrollText size={24} />, label: "Changelog" },
+    { to: "/app/developers", icon: <Code2 size={24} />, label: "API & Widgets" },
+    { to: "/app/about", icon: <User size={24} />, label: "About" },
+    { to: "/app/faq", icon: <HelpCircle size={24} />, label: "FAQ" },
   ];
+
+  const handleFavoriteClick = (fav: any) => {
+    if (setActiveLocation) {
+        setActiveLocation(fav);
+        navigate('/app/dashboard');
+    }
+  };
 
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col w-64 h-screen fixed left-0 top-0 glass-panel border-r border-white/10 z-50 transition-all duration-300 bg-black/10 backdrop-blur-xl">
-        <div className="p-8 flex items-center gap-3">
-          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <div className="bg-gradient-to-tr from-yellow-400 to-orange-500 w-10 h-10 rounded-xl flex items-center justify-center shadow-lg shrink-0">
-              <span className="text-white font-bold text-xl">M</span>
-            </div>
-            <span className="text-2xl font-bold text-white tracking-tight">MyWeather</span>
-          </Link>
+      <aside className="hidden md:flex flex-col w-[280px] h-screen fixed left-0 top-0 bg-m3-surfaceContainerLow z-50 transition-colors duration-300 p-3 overflow-y-auto scrollbar-hide">
+        
+        {/* Logo Area */}
+        <div className="px-6 py-6 mb-2 flex items-center gap-3">
+          <div className="text-m3-primary">
+            <CloudSun size={32} />
+          </div>
+          <span className="text-[22px] font-medium text-m3-onSurface tracking-tight">
+            MyWeather
+          </span>
         </div>
 
-        <nav className="flex-1 px-4 py-4 space-y-2">
+        {/* Navigation */}
+        <nav className="space-y-1 mb-6">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group ${
+                `flex items-center gap-4 px-6 py-4 rounded-full transition-all duration-200 ${
                   isActive
-                    ? 'bg-white/20 text-white shadow-lg backdrop-blur-sm'
-                    : 'text-white/60 hover:bg-white/10 hover:text-white'
+                    ? 'bg-m3-secondaryContainer text-m3-onSecondaryContainer font-semibold'
+                    : 'text-m3-onSurfaceVariant hover:bg-m3-surfaceContainerHigh'
                 }`
               }
             >
               {item.icon}
-              <span className="font-medium">{item.label}</span>
+              <span className="text-sm font-medium">{item.label}</span>
             </NavLink>
           ))}
         </nav>
 
-        <div className="p-4 border-t border-white/10 space-y-4">
+        {/* Favorites Section */}
+        {favorites && favorites.length > 0 && (
+            <div className="px-4 mb-4">
+                <div className="text-xs font-bold text-m3-onSurfaceVariant uppercase tracking-wider mb-2 px-2 flex items-center gap-2">
+                    <Star size={12} />
+                    Saved Locations
+                </div>
+                <div className="space-y-1">
+                    {favorites.map((fav) => (
+                        <button
+                            key={fav.name}
+                            onClick={() => handleFavoriteClick(fav)}
+                            className="w-full flex items-center gap-3 px-4 py-3 rounded-full hover:bg-m3-surfaceContainerHigh transition-colors text-left group"
+                        >
+                            <div className="p-1.5 bg-m3-secondaryContainer/50 text-m3-onSecondaryContainer rounded-full">
+                                <MapPin size={14} />
+                            </div>
+                            <span className="text-sm font-medium text-m3-onSurface group-hover:text-m3-primary transition-colors truncate">
+                                {fav.name}
+                            </span>
+                        </button>
+                    ))}
+                </div>
+            </div>
+        )}
+
+        {/* Bottom Actions */}
+        <div className="p-2 space-y-2 mt-auto">
+           {/* Unit Toggle */}
           <button
             onClick={toggleUnit}
-            className="flex items-center justify-between w-full p-3 rounded-xl bg-white/5 hover:bg-white/10 text-white transition-all border border-white/5"
+            className="flex items-center justify-between w-full px-4 py-3 rounded-full hover:bg-m3-surfaceContainerHigh transition-colors text-m3-onSurface"
           >
             <div className="flex items-center gap-3">
-              <Thermometer size={18} className="text-white/60" />
-              <span className="text-sm font-medium">Units</span>
+              <Thermometer size={20} className="text-m3-outline" />
+              <span className="text-sm font-medium">Temperature</span>
             </div>
-            <span className="text-xs font-bold bg-white/20 px-2 py-1 rounded-md">
+            <span className="text-xs font-bold bg-m3-primary text-m3-onPrimary px-3 py-1 rounded-full">
               °{unit}
             </span>
           </button>
 
-          <Link to="/" className="flex items-center gap-3 p-3 text-white/40 hover:text-white transition-colors text-sm">
-             <ArrowLeft size={16} />
-             Back to Home
+          <Link to="/" className="flex items-center gap-3 px-4 py-3 rounded-full text-m3-onSurfaceVariant hover:bg-m3-surfaceContainerHigh transition-colors text-sm font-medium">
+             <ArrowLeft size={20} />
+             Back to Landing
           </Link>
           
-          <div className="text-[10px] text-white/30 text-center">
-             v1.3.0 • m4rcel-lol
+          <div className="text-[11px] text-m3-outline text-center py-2 font-medium">
+             © 2024 Google Style Weather
           </div>
         </div>
       </aside>
 
       {/* Mobile Bottom Nav */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full glass-panel border-t border-white/10 z-50 pb-safe bg-black/20 backdrop-blur-xl">
-        <div className="flex justify-around items-center p-2">
+      <nav className="md:hidden fixed bottom-0 left-0 w-full bg-m3-surfaceContainer text-m3-onSurface border-t border-m3-outline/20 z-50 pb-safe shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+        <div className="flex items-center justify-start overflow-x-auto p-2 gap-3 scrollbar-hide px-4">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
-                `flex flex-col items-center gap-1 p-2 rounded-xl transition-all ${
-                  isActive ? 'text-white' : 'text-white/50'
+                `flex flex-col items-center gap-1 py-2 px-1 rounded-2xl transition-all min-w-[72px] flex-shrink-0 ${
+                  isActive 
+                  ? 'text-m3-onSurface font-medium' 
+                  : 'text-m3-onSurfaceVariant opacity-70'
                 }`
               }
             >
-              {item.icon}
-              <span className="text-[10px] font-medium">{item.label}</span>
+              <div className={({ isActive }) => isActive ? "bg-m3-secondaryContainer text-m3-onSecondaryContainer px-5 py-1 rounded-full" : "px-5 py-1"}>
+                 {item.icon}
+              </div>
+              <span className="text-[10px] mt-1 truncate w-full text-center">{item.label}</span>
             </NavLink>
           ))}
-           <button
-            onClick={toggleUnit}
-             className="flex flex-col items-center gap-1 p-2 rounded-xl text-white/50"
-            >
-            <span className="text-xs font-bold border border-white/30 rounded px-1">°{unit}</span>
-             <span className="text-[10px] font-medium">Units</span>
-          </button>
         </div>
       </nav>
     </>

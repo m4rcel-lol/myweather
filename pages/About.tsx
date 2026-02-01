@@ -29,10 +29,10 @@ export const About: React.FC = () => {
                     <a href="https://github.com/m4rcel-lol" target="_blank" rel="noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
                         <Github size={20} />
                     </a>
-                    <a href="#" className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
+                    <a href="https://x.com/GodEllernate" target="_blank" rel="noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
                         <Twitter size={20} />
                     </a>
-                    <a href="#" className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
+                    <a href="https://m5rcel.work" target="_blank" rel="noreferrer" className="p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
                         <Globe size={20} />
                     </a>
                 </div>

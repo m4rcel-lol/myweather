@@ -1,35 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Zap, Globe, Shield, Layout, Smartphone, Github } from 'lucide-react';
+import { ArrowRight, Zap, Globe, Shield, Smartphone, CloudSun } from 'lucide-react';
 
 export const Landing: React.FC = () => {
   return (
-    <div className="min-h-screen w-full text-white overflow-x-hidden relative selection:bg-purple-500/30">
+    <div className="min-h-screen w-full bg-white text-[#1f1f1f] font-sans overflow-x-hidden">
       
-      {/* Dynamic Background */}
-      <div className="fixed inset-0 z-0">
-          <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-indigo-600/20 rounded-full blur-[120px] animate-pulse"></div>
-          <div className="absolute bottom-[-20%] left-[-10%] w-[800px] h-[800px] bg-purple-600/10 rounded-full blur-[120px]"></div>
-          <div className="absolute top-[20%] left-[20%] w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-[80px]"></div>
-      </div>
-
       {/* Navigation */}
-      <nav className="w-full px-6 py-6 flex justify-between items-center max-w-7xl mx-auto z-50 relative">
-        <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-tr from-yellow-400 to-orange-500 w-10 h-10 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/20">
-                <span className="text-white font-bold text-xl">M</span>
-            </div>
-            <span className="text-xl font-bold tracking-tight">MyWeather</span>
+      <nav className="w-full px-8 py-6 flex justify-between items-center max-w-[1440px] mx-auto z-50 sticky top-0 bg-white/80 backdrop-blur-md">
+        <div className="flex items-center gap-2">
+            <CloudSun className="text-[#0b57d0]" size={32} />
+            <span className="text-xl font-medium tracking-tight text-[#444746]">MyWeather</span>
         </div>
         <div className="flex items-center gap-8">
-            <div className="hidden md:flex items-center gap-6">
-                <Link to="/app/about" className="text-white/60 hover:text-white transition-colors text-sm font-medium">About</Link>
-                <Link to="/app/developers" className="text-white/60 hover:text-white transition-colors text-sm font-medium">Developers</Link>
-                <Link to="/app/faq" className="text-white/60 hover:text-white transition-colors text-sm font-medium">FAQ</Link>
+            <div className="hidden md:flex items-center gap-8">
+                <Link to="/app/about" className="text-[#444746] hover:text-[#0b57d0] transition-colors text-sm font-medium">About</Link>
+                <Link to="/app/developers" className="text-[#444746] hover:text-[#0b57d0] transition-colors text-sm font-medium">Developers</Link>
+                <Link to="/app/faq" className="text-[#444746] hover:text-[#0b57d0] transition-colors text-sm font-medium">FAQ</Link>
             </div>
             <Link 
                 to="/app/dashboard" 
-                className="px-6 py-2.5 bg-white text-black rounded-full font-semibold text-sm hover:bg-gray-100 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-white/10"
+                className="px-6 py-3 bg-[#0b57d0] text-white rounded-full font-medium text-sm hover:bg-[#0842a0] transition-all shadow-md hover:shadow-lg"
             >
                 Launch App
             </Link>
@@ -37,121 +28,105 @@ export const Landing: React.FC = () => {
       </nav>
 
       {/* Hero Section */}
-      <div className="relative pt-20 pb-32 px-6 z-10">
-        <div className="max-w-7xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium mb-8 animate-fade-in backdrop-blur-md">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span className="bg-gradient-to-r from-emerald-200 to-green-100 bg-clip-text text-transparent font-bold">Live on Vercel</span>
-            </div>
+      <div className="pt-20 pb-32 px-6">
+        <div className="max-w-4xl mx-auto text-center">
             
-            <h1 className="text-5xl md:text-8xl font-bold tracking-tighter mb-8 leading-[1.1] animate-slide-up">
-                Forecasts without <br />
-                <span className="bg-gradient-to-r from-blue-300 via-indigo-300 to-purple-300 bg-clip-text text-transparent">compromise.</span>
+            <h1 className="text-6xl md:text-8xl font-semibold tracking-tight mb-8 leading-[1.1] text-[#1f1f1f]">
+                Weather,<br />
+                <span className="text-[#0b57d0]">reimagined.</span>
             </h1>
             
-            <p className="text-xl md:text-2xl text-white/50 max-w-2xl mx-auto mb-12 animate-slide-up leading-relaxed" style={{animationDelay: '0.1s'}}>
-                The most beautiful, privacy-focused weather experience. <br className="hidden md:block"/>
-                Open source, ad-free, and available via API.
+            <p className="text-xl md:text-2xl text-[#444746] max-w-2xl mx-auto mb-12 leading-relaxed font-normal">
+                A simple, beautiful weather experience designed for clarity.
+                No ads. No tracking. Just the forecast.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up mb-24" style={{animationDelay: '0.2s'}}>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-24">
                 <Link 
                     to="/app/dashboard" 
-                    className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full font-bold text-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all flex items-center justify-center gap-2 group border border-white/10"
+                    className="w-full sm:w-auto px-8 py-4 bg-[#0b57d0] text-white rounded-full font-medium text-lg hover:bg-[#0842a0] hover:shadow-xl transition-all flex items-center justify-center gap-2"
                 >
                     Get Started
-                    <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight size={20} />
                 </Link>
                 <Link 
                     to="/app/developers" 
-                    className="w-full sm:w-auto px-8 py-4 bg-white/5 border border-white/10 rounded-full font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2 backdrop-blur-sm"
+                    className="w-full sm:w-auto px-8 py-4 bg-transparent text-[#0b57d0] border border-[#747775] rounded-full font-medium text-lg hover:bg-[#f0f4f8] hover:border-[#0b57d0] transition-all flex items-center justify-center gap-2"
                 >
-                    <Layout size={20} />
-                    Widget Studio
+                    Widgets
                 </Link>
             </div>
-
-            {/* Dashboard Mockup */}
-            <div className="relative max-w-5xl mx-auto animate-slide-up perspective-1000" style={{animationDelay: '0.3s'}}>
-                 {/* Glow behind dashboard */}
-                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-blue-500/30 rounded-full blur-[100px] -z-10"></div>
-                 
-                 <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-[#0f172a]/80 backdrop-blur-xl group hover:scale-[1.01] transition-transform duration-700">
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none z-20"></div>
-                    
-                    {/* Mock Browser Header */}
-                    <div className="h-12 bg-white/5 border-b border-white/5 flex items-center px-4 gap-2">
-                        <div className="flex gap-2">
-                            <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
-                            <div className="w-3 h-3 rounded-full bg-yellow-500/50"></div>
-                            <div className="w-3 h-3 rounded-full bg-green-500/50"></div>
-                        </div>
-                        <div className="ml-4 px-4 py-1.5 bg-black/20 rounded-md text-xs text-white/30 font-mono w-64 flex items-center justify-between">
-                            <span>myweather.m5rcel.work</span>
-                            <Shield size={10} />
-                        </div>
-                    </div>
-
-                    {/* Mock Content */}
-                    <div className="p-8 grid grid-cols-1 md:grid-cols-3 gap-6 opacity-80 group-hover:opacity-100 transition-opacity">
-                        <div className="md:col-span-2 h-64 rounded-2xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border border-white/5 p-6 flex flex-col justify-between">
-                             <div className="flex justify-between items-start">
-                                <div>
-                                    <div className="h-8 w-48 bg-white/10 rounded-lg mb-2"></div>
-                                    <div className="h-4 w-24 bg-white/5 rounded-lg"></div>
-                                </div>
-                                <div className="h-12 w-12 rounded-full bg-yellow-400/20"></div>
-                             </div>
-                             <div className="h-20 w-32 bg-white/10 rounded-lg"></div>
-                        </div>
-                        <div className="h-64 rounded-2xl bg-white/5 border border-white/5 p-6 space-y-4">
-                            <div className="h-8 w-full bg-white/10 rounded-lg"></div>
-                            <div className="h-8 w-full bg-white/5 rounded-lg"></div>
-                            <div className="h-8 w-full bg-white/5 rounded-lg"></div>
-                            <div className="h-8 w-full bg-white/5 rounded-lg"></div>
-                        </div>
-                    </div>
+        </div>
+        
+        {/* Product Shot */}
+        <div className="max-w-6xl mx-auto relative group perspective-1000">
+             <div className="absolute inset-x-20 inset-y-10 bg-gradient-to-t from-[#d3e3fd] to-transparent rounded-[60px] blur-3xl -z-10 opacity-60"></div>
+             <div className="rounded-[32px] overflow-hidden border border-[#e1e3e1] shadow-2xl bg-[#f8f9fa] transform group-hover:scale-[1.01] transition-transform duration-700 ease-out">
+                 <div className="grid grid-cols-1 md:grid-cols-2 p-12 gap-12 items-center">
+                      <div className="space-y-6">
+                          <div className="w-16 h-16 bg-[#c2e7ff] rounded-2xl flex items-center justify-center text-[#001d35] mb-4">
+                             <CloudSun size={32} />
+                          </div>
+                          <h3 className="text-4xl font-semibold text-[#1f1f1f]">Precise data. <br/>Local privacy.</h3>
+                          <p className="text-[#444746] text-lg">
+                              We use Open-Meteo's high-precision API to deliver hyperlocal forecasts directly to your browser. Your location data never touches our servers.
+                          </p>
+                      </div>
+                      <div className="relative h-[400px] w-full bg-white rounded-3xl shadow-sm border border-[#e1e3e1] p-6 flex flex-col">
+                           <div className="flex justify-between items-center mb-8">
+                               <div>
+                                   <div className="text-4xl font-semibold text-[#1f1f1f]">72°</div>
+                                   <div className="text-[#444746]">San Francisco</div>
+                               </div>
+                               <CloudSun size={48} className="text-[#fbbc04]" />
+                           </div>
+                           <div className="space-y-4 mt-auto">
+                               <div className="flex justify-between items-center p-4 bg-[#f0f4f8] rounded-xl">
+                                   <span className="font-medium text-[#1f1f1f]">Tuesday</span>
+                                   <span className="font-medium text-[#1f1f1f]">74° / 60°</span>
+                               </div>
+                               <div className="flex justify-between items-center p-4 bg-[#f0f4f8] rounded-xl">
+                                   <span className="font-medium text-[#1f1f1f]">Wednesday</span>
+                                   <span className="font-medium text-[#1f1f1f]">72° / 58°</span>
+                               </div>
+                           </div>
+                      </div>
                  </div>
-            </div>
+             </div>
         </div>
       </div>
 
       {/* Features Grid */}
-      <div className="py-24 px-6 relative z-10">
+      <div className="py-24 px-6 bg-[#f0f4f8]">
         <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">Engineered for performance</h2>
-                <p className="text-white/50">Everything you need, nothing you don't.</p>
-            </div>
-
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="p-8 rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group">
-                    <div className="w-12 h-12 rounded-2xl bg-blue-500/20 flex items-center justify-center text-blue-300 mb-6 group-hover:scale-110 transition-transform">
-                        <Zap size={24} />
+                <div className="p-10 rounded-[32px] bg-white hover:shadow-xl transition-shadow duration-300">
+                    <div className="w-14 h-14 rounded-full bg-[#e8def8] flex items-center justify-center text-[#65558f] mb-6">
+                        <Zap size={28} />
                     </div>
-                    <h3 className="text-xl font-bold mb-3">Lightning Fast</h3>
-                    <p className="text-white/60 leading-relaxed">
-                        Built with React 19 and Vite. Cached intelligent data fetching ensures instant load times across the globe.
+                    <h3 className="text-2xl font-semibold mb-3 text-[#1f1f1f]">Instant</h3>
+                    <p className="text-[#444746] leading-relaxed">
+                        Built with React 19 for zero-latency interactions. Data caches locally for instant load times.
                     </p>
                 </div>
 
-                <div className="p-8 rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group">
-                    <div className="w-12 h-12 rounded-2xl bg-purple-500/20 flex items-center justify-center text-purple-300 mb-6 group-hover:scale-110 transition-transform">
-                        <Smartphone size={24} />
+                <div className="p-10 rounded-[32px] bg-white hover:shadow-xl transition-shadow duration-300">
+                    <div className="w-14 h-14 rounded-full bg-[#d3e3fd] flex items-center justify-center text-[#041e49] mb-6">
+                        <Smartphone size={28} />
                     </div>
-                    <h3 className="text-xl font-bold mb-3">Mobile First</h3>
-                    <p className="text-white/60 leading-relaxed">
-                        Responsive glassmorphism design that feels native on iOS and Android devices.
+                    <h3 className="text-2xl font-semibold mb-3 text-[#1f1f1f]">Adaptive</h3>
+                    <p className="text-[#444746] leading-relaxed">
+                        A responsive Material Design interface that feels native on every device, from phones to desktops.
                     </p>
                 </div>
 
-                <div className="p-8 rounded-3xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group">
-                    <div className="w-12 h-12 rounded-2xl bg-green-500/20 flex items-center justify-center text-green-300 mb-6 group-hover:scale-110 transition-transform">
-                        <Shield size={24} />
+                <div className="p-10 rounded-[32px] bg-white hover:shadow-xl transition-shadow duration-300">
+                    <div className="w-14 h-14 rounded-full bg-[#c4eed0] flex items-center justify-center text-[#072711] mb-6">
+                        <Shield size={28} />
                     </div>
-                    <h3 className="text-xl font-bold mb-3">Privacy Centric</h3>
-                    <p className="text-white/60 leading-relaxed">
-                        Your location never leaves your browser. We proxy no data and store no logs.
+                    <h3 className="text-2xl font-semibold mb-3 text-[#1f1f1f]">Secure</h3>
+                    <p className="text-[#444746] leading-relaxed">
+                        No trackers. No cookies. No third-party analytics. Just a secure connection to weather satellites.
                     </p>
                 </div>
             </div>
@@ -159,23 +134,21 @@ export const Landing: React.FC = () => {
       </div>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-white/10 bg-black/20 backdrop-blur-xl relative z-10">
+      <footer className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-center md:text-left">
                 <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
-                    <span className="font-bold text-lg">MyWeather</span>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-white/50">v1.3.0</span>
+                    <span className="font-semibold text-lg text-[#1f1f1f]">Google Style Weather</span>
                 </div>
-                <p className="text-white/40 text-sm">© {new Date().getFullYear()} m4rcel-lol. All rights reserved.</p>
+                <p className="text-[#747775] text-sm">© {new Date().getFullYear()} m4rcel-lol.</p>
             </div>
             
             <div className="flex gap-8 text-sm font-medium">
-                <a href="https://github.com/m4rcel-lol" target="_blank" rel="noreferrer" className="text-white/60 hover:text-white flex items-center gap-2 transition-colors">
-                    <Github size={16} />
+                <a href="https://github.com/m4rcel-lol" target="_blank" rel="noreferrer" className="text-[#444746] hover:text-[#0b57d0] transition-colors">
                     GitHub
                 </a>
-                <Link to="/app/about" className="text-white/60 hover:text-white transition-colors">About</Link>
-                <Link to="/app/developers" className="text-white/60 hover:text-white transition-colors">API</Link>
+                <Link to="/app/about" className="text-[#444746] hover:text-[#0b57d0] transition-colors">About</Link>
+                <Link to="/app/developers" className="text-[#444746] hover:text-[#0b57d0] transition-colors">API</Link>
             </div>
         </div>
       </footer>
